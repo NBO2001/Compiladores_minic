@@ -23,6 +23,7 @@ if [ $? -eq 0 ]; then
             echo "$test_case failed"
             echo $result
             cat errup
+            exit 1
         fi
         rm errup
       
@@ -30,4 +31,5 @@ if [ $? -eq 0 ]; then
 else
     echo "Error compiling the grammar"
     echo "$compiler_grammar"
+    exit 1
 fi
