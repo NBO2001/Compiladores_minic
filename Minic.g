@@ -22,7 +22,7 @@ parameter_list: '(' (parameter_declaration)? ')';
 
 parameter_declaration: INT declarator (',' INT declarator)* ;
 
-function_body: '{' (data_definition)? (statement)? '}';
+function_body: '{' (data_definition | statement)* '}';
 
 statement: 
     expression ';'
