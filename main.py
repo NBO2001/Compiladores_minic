@@ -26,6 +26,6 @@ def app(fileName: str):
 if __name__ == '__main__':
     n = len(sys.argv)
 
-    assert n == 2, 'Ivalidade arguments'
+    assert n == 2, f"Ivalidade arguments; Use: python3 {sys.argv[0]} <file_name>"
 
     app(sys.argv[1])
