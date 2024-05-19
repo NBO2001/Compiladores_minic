@@ -26,8 +26,8 @@ function_body: '{' (data_definition | statement)* '}' ;
 
 statement: 
     expression ';'
-    | 'if' '(' expression ')' block ('else' block)?
-    | 'while' '(' expression ')' block
+    | 'if' '(' expression ')' statement ('else' statement)?
+    | 'while' '(' expression ')' statement
     | 'break' ';'
     | 'continue' ';'
     | 'return' (expression)? ';'
@@ -48,8 +48,8 @@ binary:
     | unary ;
 
 unary:
-    '++' IDENTIFIER
-    | '--' IDENTIFIER
+    ('++'| '--') IDENTIFIER
+    | IDENTIFIER ('++'| '--')
     | primary ;
 
 primary:
