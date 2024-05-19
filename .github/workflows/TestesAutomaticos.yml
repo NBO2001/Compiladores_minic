@@ -20,7 +20,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        pip install antlr4-python3-runtime 
+        pip install antlr4-python3-runtime==4.7.2
 
     - name: Install Antlr4
       run: sudo apt-get install antlr4 
