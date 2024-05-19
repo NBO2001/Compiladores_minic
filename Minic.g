@@ -4,22 +4,25 @@ program: definition definition*;
 
 definition: data_definition | function_definition;
 
-data_definition: 'int' declarator (',' declarator)* ';';
+INT: 'int';
+
+data_definition: INT declarator (',' declarator)* ';';
 
 declarator: IDENTIFIER;
 
 IDENTIFIER: [a-zA-Z_][a-zA-Z_0-9]*;
 CONSTANT_INT: [0-9]+;
 
-function_definition: ('int')? function_header;
+// Não há função sem retorno
+function_definition: INT function_header function_body;
 
 function_header: declarator parameter_list;
 
 parameter_list: '(' (parameter_declaration)? ')';
 
-parameter_declaration: 'int' declarator (',' declarator)* ;
+parameter_declaration: INT declarator (',' INT declarator)* ;
 
-function_body: '{' (data_definition)? ( statement ) '}';
+function_body: '{' (data_definition)? (statement)? '}';
 
 statement: 
     expression ';'
@@ -30,7 +33,7 @@ statement:
     | 'return' ( expression )? ';';
 
 expression: 
-    binary (',' binary);
+    binary (',' binary)*;
 
 binary:
      IDENTIFIER '=' binary
@@ -48,12 +51,12 @@ binary:
     |binary ('+'| '-') binary
     |binary ('*' | '/') binary
     |binary '%' binary
-    |unary
+    |unary;
 
 unary:
     '++' IDENTIFIER
     |'--' IDENTIFIER
-    |primary
+    |primary;
 
 primary:
     IDENTIFIER
@@ -62,6 +65,6 @@ primary:
     | IDENTIFIER '(' (argument_list)? ')';
 
 argument_list:
-    : binary (',' binary)*;
+    binary (',' binary)*;
 
 WS : [ \t\r\n]+ -> skip ;
