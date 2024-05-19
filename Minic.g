@@ -1,70 +1,64 @@
 grammar Minic;
 
-program: definition definition*;
+program: definition+ ;
 
-definition: data_definition | function_definition;
+definition: data_definition | function_definition ;
 
 INT: 'int';
 
-data_definition: INT declarator ('=' binary)? (',' declarator)* ';';
+data_definition: INT declarator ('=' binary)? (',' declarator)* ';' ;
 
-declarator: IDENTIFIER;
+declarator: IDENTIFIER ;
 
-IDENTIFIER: [a-zA-Z_][a-zA-Z_0-9]*;
-CONSTANT_INT: [0-9]+;
+IDENTIFIER: [a-zA-Z_][a-zA-Z_0-9]* ;
+CONSTANT_INT: [0-9]+ ;
 
-// Não há função sem retorno
-function_definition: INT function_header function_body;
+// No functions without return type
+function_definition: INT function_header function_body ;
 
-function_header: declarator parameter_list;
+function_header: declarator parameter_list ;
 
-parameter_list: '(' (parameter_declaration)? ')';
+parameter_list: '(' (parameter_declaration (',' parameter_declaration)*)? ')' ;
 
-parameter_declaration: INT declarator (',' INT declarator)* ;
+parameter_declaration: INT declarator ;
 
-function_body: '{' (data_definition | statement)* '}';
+function_body: '{' (data_definition | statement)* '}' ;
 
 statement: 
     expression ';'
-    | 'if' '(' expression ')' statement ('else' statement)?
-    | 'while' '(' expression ')' statement
+    | 'if' '(' expression ')' block ('else' block)?
+    | 'while' '(' expression ')' block
     | 'break' ';'
     | 'continue' ';'
-    | 'return' ( expression )? ';';
+    | 'return' (expression)? ';'
+    | block ;
+
+block: '{' (statement)* '}' ;
 
 expression: 
-    binary (',' binary)*;
+    binary (',' binary)* ;
 
 binary:
      IDENTIFIER '=' binary
-    |IDENTIFIER '+=' binary
-    |IDENTIFIER '-=' binary
-    |IDENTIFIER '*=' binary
-    |IDENTIFIER '/=' binary
-    |IDENTIFIER '%=' binary
-    |binary '==' binary
-    |binary '!=' binary
-    |binary '<' binary
-    |binary '<=' binary
-    |binary '>=' binary
-    |binary '>' binary
-    |binary ('+'| '-') binary
-    |binary ('*' | '/') binary
-    |binary '%' binary
-    |unary;
+    | IDENTIFIER ('+=' | '-=' | '*=' | '/=' | '%=') binary
+    | binary ('==' | '!=' | '<' | '<=' | '>=' | '>') binary
+    | binary ('+' | '-') binary
+    | binary ('*' | '/') binary
+    | binary '%' binary
+    | unary ;
 
 unary:
     '++' IDENTIFIER
-    |'--' IDENTIFIER
-    |primary;
+    | '--' IDENTIFIER
+    | primary ;
 
 primary:
     IDENTIFIER
-    |CONSTANT_INT
-    |'(' expression ')'
-    | IDENTIFIER '(' (argument_list)? ')';
+    | CONSTANT_INT
+    | '(' expression ')'
+    | IDENTIFIER '(' (argument_list)? ')' ;
 
 argument_list:
-    binary (',' binary)*;
+    binary (',' binary)* ;
 
 WS : [ \t\r\n]+ -> skip ;
