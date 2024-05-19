@@ -6,7 +6,7 @@ definition: data_definition | function_definition;
 
 INT: 'int';
 
-data_definition: INT declarator (',' declarator)* ';';
+data_definition: INT declarator ('=' binary)? (',' declarator)* ';';
 
 declarator: IDENTIFIER;
 
